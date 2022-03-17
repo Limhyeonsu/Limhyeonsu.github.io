@@ -2,7 +2,7 @@
 
 # Import the theme
 theme: jekyll-theme-chirpy
-futrue: true
+
 # Change the following value to '/PROJECT_NAME' ONLY IF your site type is GitHub Pages Project sites
 # and doesn't have a custom domain.
 baseurl: ''
@@ -87,7 +87,7 @@ avatar: assets/img/profile_img.jpg
 
 # boolean type, the global switch for ToC in posts.
 toc: true
-
+futrue: true
 comments:
   active:         # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # The active options are as follows:
