@@ -29,7 +29,7 @@ description: >-                        # used by seo meta and the atom feed
   A minimal, responsive, and powerful Jekyll theme for presenting professional writing.
 
 # fill in the protocol & hostname for your site, e.g., 'https://username.github.io'
-url: 'https://Limhyeonsu.github.io'
+url: https://Limhyeonsu.github.io
 
 github:
   username: Limhyeonsu                  # change to your github username
@@ -87,7 +87,7 @@ avatar: assets/img/profile_img.jpg
 
 # boolean type, the global switch for ToC in posts.
 toc: true
-futrue: true
+
 comments:
   active:         # The global switch for posts comments, e.g., 'disqus'.  Keep it empty means disable
   # The active options are as follows:
