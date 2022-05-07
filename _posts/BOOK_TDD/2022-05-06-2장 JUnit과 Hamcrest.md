@@ -121,3 +121,104 @@ public class AccountTest extends TestCase{
 
 **JUnit 테스트 클래스에는 각 테스트 메소드 별로 생성자가 호출된다. 이는 Java의 리플렉션을 사용해서 테스트 메소드를 실행할 때마다 테스트 클래스를 강제로 인스턴스화 하는 것이다.
 그 이유는 좋은 테스트 케이스는 기본적으로 다른 테스트 케이스의 수행이나 수행 결과에 영향을 받지 않아야 한다. 이것이 테스트의 기본 원칙이다. 따라서 테스트 케이스를 독립적으로 수행하기 위해 테스트 메소드 수행 전 테스트 클래스 자체를 리셋하는 것이다.
+
+#### JUnit4
+[특징]
+* Java5 애노테이션 지원
+* test 로 method 이름을 시작해야 한다는 제약 해소 : @Test 사용
+* 좀 더 유연한 픽스처 : @Before, @After, @BeforeClass, @AfterClass
+* 예외 테스트 : @Test(expected=NumberFormatException.class)
+* 시간 제한 테스트 : @Test(timeout=1000)
+* 테스트 무시 : @Ignore("this method isn't working yet")
+* 배열 지원 : assertArrayEquals([message], expected, actual)
+* @RunWith(클래스이름.class) : 테스트 클래스 실행 전 러너를 명시적으로 지정한다.
+* @SuiteClasses(Class[]) : 여러개의 테스트 클래스를 수행하기 위해 쓰인다.
+* 파라미터를 이용한 테스트
+
+1)애노테이션
+
+JDK 1.5에서 많은 변화가 있었는데 대표적으로 애노테이션, 제네릭스, 향상된 for문, 타입세이프한 열거형 타입 등이 있다. 애노테이션의 가장 큰 장점은 프레임워크의 내부 모델에 대한 자세한 이해 없이도 각 메소드의 사용 의도를 명확하게 문서화한다는 점이다.
+JUnit 3버전에서는 애노테이션을 사용할 수 없었으나 TestNG라는 애노테이션 기반의 xUnit 테스트 프레임워크가 JDK 1.4 이하에서도 애노테이션을 쓸 수 있게 해줬다.
+
+JUnit 4는 TestNG의 상당 기능을 그대로 차용해왔고, 인지도 측면에서 JUnit이 월등이 높아 JUnit 4가 나오면서 애노테이션을 이용한 테스트 케이스 작성시 JUnit이 주로 사용되게 됐다.
+
+2)@Test
+
+테스트 케이스에 해당하는 메소드로 지정하기 위해서 메소드 이름을 소문자 test로 시작해야한다는 규칙이 있었으나 JUnit 4에서는 메소드 이름과 상관없이 @Test 애노테이션만 붙이면 테스트 메소드로 인식한다.
+
+3)테스트 픽스처 메소드 추가 지원
+
+버전3에서는 setUp, tearDown이라는 두 개의 테스트 픽스처 메소드를 제공했는데 버전 4에서는 각각 @Before, @After라는 이름의 애노테이션으로 지원한다. 또 단 한 번만 실행할 수 있는 기능을 제공하지 않았으나
+@BeforeClass, @AfterClass 라는 두 개의 애노테이션을 이용해 하나의 테스트 클래스 내에서 한 번만 실행하는 메소드를 만들 수 있게 한다.
+
+4)예외 테스트
+
+3버전에서는 예외를 테스트하는 공식적인 방법을 제공하지 않았다. 대신 try/catch 문과 assert 단정문을 일종의 트릭처럼 사용했으나 4에서는 애노테이션을 이용해 작성한다.
+`@Test(expected=NumberFormatException.class)` expected 값으로 예외 클래스를 지정했을 때, 테스트 메소드 내에서 해당 예외가 발생하지 않는다면 테스트 메소드를 실패로 간주하낟.
+
+5)테스트 시간 제한
+
+`@Test(timeout=5000)` 밀리초 단위의 시간을 정해준 후 해당 시간내에서 테스트 메소드가 수행완료되지 않으면 실패한 테스트 케이스로 간주한다.
+
+6)테스트 무시
+
+`@Ignore` 애노테이션을 붙이면 지우기 전까지 수행하지 않는다.
+
+7)배열 지원
+
+원소의 자리 순서 기준으로 equals 비교가 이뤄지기 때문에 배열안의 값이 동일하더라도 순서가 다르면 테스트가 실패한다.
+```
+@Test
+public void testArrayAssertEquals() throws Exception {
+  String [] names = {"Tom", "JIMMY", "JOHIN"}
+  String [] anotherNames = {"Tom", "JIMMY", "JOHIN"}
+  assertArrayEquals(name, anotherNames);
+}
+```
+
+8)@RunWith
+
+각각의 테스트 메소드 실행을 담당하고 있는 클래스를 테스트 러너라고 한다. @RunWith 애노테이션은 JUnit에 내장된 기본 테스트 러너인 BlockJUnit4ClassRunner 대신 @RunWith 로 지정된 클래스를 이용해 클래스 내의 테스트 메소드들을 수행하도록 지정해주는 애노테이션이다.
+예를 들면 스프링 프레임워크에서 제공하는 SpringJUnit4ClassRunner.class를 지정하면 스프링에서 자체적으로 만들어놓은 추가적인 테스트 기능을 이용할 수 있게 된다.
+
+9)@SuiteClasses
+
+여러개의 테스트 클래스를 일괄적으로 수행할 수 있다.
+
+```
+//4버전
+@RunWith(Suite.class)
+@SuiteClasses(ATest.class, BTest.class, CTest.class)
+public class ABCSuite{...}
+
+//3버전
+public class ABCSuite extends TestCase{
+  public static Test suite() {
+    TestSuite suite = new TestSuite();
+    suite.addTestSuite(ATest.claa);
+    suite.addTestSuite(BTest.claa);
+    suite.addTestSuite(CTest.claa);
+    return suite;
+  }
+}
+```
+
+10)파라미터화된 테스트
+
+하나의 메소드에 대해 다양한 테스트 값을 하꺼번에 실행시키고자 할 때 사용한다.
+
+11)룰(Rule)
+
+하나의 테스트 클래스 내에서 각 테스트 메소드의 동작 방식을 재정의하거나 추가하기 위해 사용하는 기능이다.
+* TemporaryFolder : 테스트 메소드 내에서만 사용 가능한 임시 폴더나 임시 파일을 만들어 준다.
+* ExternResource : 외부 자원을 명시적으로 초기화한다.
+* ErrorCollector : 테스트 실패에도 테스트를 중단하지 않고 진행할 수 있게 도와준다.
+* Verifier : 테스트 케이스와는 별개의 조건을 만들어서 확인할 때 사용한다.
+* TestWatchman : 테스트 실행 중간에 사용자가 끼어들 수 있게 도와준다.
+* TestName : 테스트 메소드의 이름을 알려준다.
+* Timeout : 일괄적인 타임아웃을 설정한다.
+* ExpectedException : 테스트 케이스 내에서 예외와 예외 메시지를 직접 확인할 때 사용한다.
+
+12)이론(Theory)
+
+테스트 데이터와 상관없이 작성 대상 메소드를 항상 유지해야 하는 논리적인 규직을 표현할 때 사용한다.
