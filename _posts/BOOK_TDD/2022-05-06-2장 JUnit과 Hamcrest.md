@@ -222,3 +222,69 @@ public class ABCSuite extends TestCase{
 12)이론(Theory)
 
 테스트 데이터와 상관없이 작성 대상 메소드를 항상 유지해야 하는 논리적인 규직을 표현할 때 사용한다.
+
+
+### 2.2 비교표현의 확장 : Hamacrest(햄크레스트)
+jMock이라는 Mock 라이브러리 저자들이 참여해 만들고 있는 Matcher 라이브러리로 테스트 표현식을 작성할 때 좀 더 문맥적으로 자연스럽고 우아한 문장을 만들 수 있게 도와준다.
+Matcher는 이름 그대로 어떤 값들의 상호 일치 여부나 특정한 규칙 준수 여부 등을 판별하기 위해 만들어진 메소드나 객체를 지칭한다.
+
+Hamacrest는 다양한 Matcher들이 모인 Matcher 집합체다. 단위 테스트와 함께 사용하면 테스트 케이스 작성시 문맥적으로 좀 더 자연스러운 문장을 만들어준다.
+
+기본적으로 assertEquals 보다는 assertThat이라는 구문 사용을 권장한다.
+
+예) assertThat(account.getBalance(), is(equalTo(10000)));, assertThat(resource.newConnection(), is(notNullValue())); assertThat(account.getBalance(), isGreaterThan(0));
+
+위 예제에서 is, equalTo, isGreaterThan 등의 메소드가 Matcher 구문에 해당한다. 이 구문은 static으로 선언되어 있고, 리턴 값은 Matcher 클래스로 되어있다.
+따라서 사용하려면 `import static org.junit.Assert.*;`, `import static org.hamcrest.CoreMatchers.*;`
+
+Hamacrest 라이브러리를 사용시 실패 메시지는 예상 값이 이것인데 실제로는 이 값이 나왔음의 형태로 보여준다.
+
+[Hamacrest 패키지]
+* org.hamcrest.core : 오브젝트나 값들에 대한 기본적인 Matcher
+* org.hamcrest.beans : Java Bean과 그 값 비교에 사용되는 Matcher
+* org.hamcrest.collection : 배열과 컬렉션 Matcher
+* org.hamcrest.number : 수를 비교하기 위한 Matcher
+* org.hamcrest.object : 오브젝트와 클래스를 비교하는 Matcher
+* org.hamcrest.text : 문자열 비교
+* org.hamcrest.xml : XML 문서 비교
+
+[Matcher 종류에 따른 분류]
+
+<img src="/assets/img/posting_img/book/TDD/matcher1.jpeg" width="700px">
+<img src="/assets/img/posting_img/book/TDD/matcher2.jpeg" width="700px">
+<img src="/assets/img/posting_img/book/TDD/matcher3.jpeg" width="700px">
+
+#### 사용자 정의 Matcher 만들기
+자신만의 비교 구문 Matcher를 만들고 싶다면 TypeSageMatcher를 상속받아서 matchesSafely, describeTo를 재정의하면 된다.
+
+```
+package main;
+
+import org.hamcrest.Description;
+import org.hamcrest.Factory;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+
+public class IsNotANumber extends TypeSafeMatcher<Double> {
+
+    @Override
+    protected boolean matchesSafely(Double number) {
+        return number.isNaN();
+    }
+
+    @Override
+    public void describeTo(Description description) {
+        description.appendText("not a number");
+    }
+
+    @Factory
+    public static <T> Matcher<Double> notANumber() {
+        return new IsNotANumber();
+    }
+}
+```
+```
+public void testSquareRootOfMinusOneIsNotANumber() {
+  assertThat(Math.sqrt(-1), is(notANumber()));
+}
+```
