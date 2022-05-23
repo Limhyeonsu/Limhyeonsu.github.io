@@ -35,7 +35,7 @@ JUnit은 junit.org 사이트에서 파일을 내려받아 클래스 경로내에
 1)테스트 픽스처 메소드
 * setUp() : 각각의 테스트 메소드가 실행되기 전에 공통으로 호출되는 메소드다. 주로 테스트 환경 준비에 해당하는 자원 할당, 객체 생성, DB 연결 등의 작업이 이루어진다.
 * tearDown() : 각각의 테스트 메소드가 실행된 후 수행되는 메소드다. 자원 해제, 연결 해제, 객체 초기화 등 뒷정리 작업을 한다.
-```
+```java
 public class DaoTest extends TestCase{
   Connection connection;
 
@@ -75,7 +75,7 @@ junit.awtui.TestRunner.run(Test.Class);
 * 메소드는 반드시 __publid static Test suite()__ 여야 한다.
 * 테스트 추가는 suite.addTestSuite(테스트 클래스.class) 형식을 갖는다.
 
-```
+```java
 Class SuiteTest {
   public static void main(String[] args) {
     junit.swingui.TestRunner.run(SuiteTest.class);
@@ -94,7 +94,7 @@ Class SuiteTest {
 테스트 스위트는 여러 개의 테스트 케이스를 함께 수행할 때 사용하나 현재는 잘 사용하지 않는다.
 
 #### JUnit3으로 테스트 케이스 작성하기
-```
+```java
 public class AccountTest extends TestCase{
     Account account;
 
@@ -167,7 +167,7 @@ JUnit 4는 TestNG의 상당 기능을 그대로 차용해왔고, 인지도 측�
 7)배열 지원
 
 원소의 자리 순서 기준으로 equals 비교가 이뤄지기 때문에 배열안의 값이 동일하더라도 순서가 다르면 테스트가 실패한다.
-```
+```java
 @Test
 public void testArrayAssertEquals() throws Exception {
   String [] names = {"Tom", "JIMMY", "JOHIN"}
@@ -185,7 +185,7 @@ public void testArrayAssertEquals() throws Exception {
 
 여러개의 테스트 클래스를 일괄적으로 수행할 수 있다.
 
-```
+```java
 //4버전
 @RunWith(Suite.class)
 @SuiteClasses(ATest.class, BTest.class, CTest.class)
@@ -257,7 +257,7 @@ Hamacrest 라이브러리를 사용시 실패 메시지는 예상 값이 이것�
 #### 사용자 정의 Matcher 만들기
 자신만의 비교 구문 Matcher를 만들고 싶다면 TypeSageMatcher를 상속받아서 matchesSafely, describeTo를 재정의하면 된다.
 
-```
+```java
 package main;
 
 import org.hamcrest.Description;
