@@ -1,0 +1,5 @@
+User-agent: *
+
+Disallow: /norobots/
+
+Sitemap: https://limhyeonsu.github.io/sitemap.xml
