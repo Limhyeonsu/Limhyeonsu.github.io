@@ -1,0 +1,209 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.3.2" /><meta property="og:title" content="GROUP BY 절과 HAVING 절" /><meta property="og:locale" content="en" /><meta name="description" content="GROUP BY 절은 행 그룹을 생성하고, HAVING 절은 조회할 행 그룹을 선택한다. GROUP BY 절은 WHERE 절 다음에 기술하며, WHERE 절이 수행된 후 수행된다." /><meta property="og:description" content="GROUP BY 절은 행 그룹을 생성하고, HAVING 절은 조회할 행 그룹을 선택한다. GROUP BY 절은 WHERE 절 다음에 기술하며, WHERE 절이 수행된 후 수행된다." /><link rel="canonical" href="https://limhyeonsu.github.io/posts/10.Group-by-%EC%A0%88%EA%B3%BC-having-%EC%A0%88/" /><meta property="og:url" content="https://limhyeonsu.github.io/posts/10.Group-by-%EC%A0%88%EA%B3%BC-having-%EC%A0%88/" /><meta property="og:site_name" content="Hyeonsu Lim" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2023-02-02T23:09:07+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="GROUP BY 절과 HAVING 절" /><meta name="twitter:site" content="@imhyeon99494867" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-02-06T23:38:12+09:00","datePublished":"2023-02-02T23:09:07+09:00","description":"GROUP BY 절은 행 그룹을 생성하고, HAVING 절은 조회할 행 그룹을 선택한다. GROUP BY 절은 WHERE 절 다음에 기술하며, WHERE 절이 수행된 후 수행된다.","headline":"GROUP BY 절과 HAVING 절","mainEntityOfPage":{"@type":"WebPage","@id":"https://limhyeonsu.github.io/posts/10.Group-by-%EC%A0%88%EA%B3%BC-having-%EC%A0%88/"},"url":"https://limhyeonsu.github.io/posts/10.Group-by-%EC%A0%88%EA%B3%BC-having-%EC%A0%88/"}</script><title>10. GROUP BY 절과 HAVING 절 | Hyeonsu Lim</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Hyeonsu Lim"><meta name="application-name" content="Hyeonsu Lim"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" /assets/img/profile_img.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Hyeonsu Lim</a></div><div class="site-subtitle font-italic">Developer</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/Limhyeonsu" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/imhyeon99494867" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['gustn72096','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>10. GROUP BY 절과 HAVING 절</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>10. GROUP BY 절과 HAVING 절</h1><div class="post-meta text-muted"><div> By <em> <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1675346947" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-02-02 </em> </span> <span> Updated <em class="timeago" data-ts="1675694292" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-02-06 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="1230 words"> <em>6 min</em> read</span></div></div></div><div class="post-content"><p>GROUP BY 절은 행 그룹을 생성하고, HAVING 절은 조회할 행 그룹을 선택한다. GROUP BY 절은 WHERE 절 다음에 기술하며, WHERE 절이 수행된 후 수행된다.</p><h2 id="101-group-by-절"><span class="mr-2">10.1 GROUP BY 절</span><a href="#101-group-by-절" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>SELECT SUM(sal) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY ();
+</pre></table></code></div></div><p>GROUP BY 절을 기술하지 않거나, GROUP BY 절에 NULL이나 ()을 기술하면 전체 행이 하나의 행 그룹으로 처리된다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre><td class="rouge-code"><pre>SELECT deptno, SUM(sal) AS sal
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY deptno;
+
+SELECT deptno, SUM(sal) AS sal
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY deptno, job;
+
+SELECT deptno
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY deptno
+ORDER BY SUM(sal);
+</pre></table></code></div></div><p>GROUP BY 절을 사용한 쿼리는 <code class="language-plaintext highlighter-rouge">SELECT 절과 ORDER BY 절</code>에 GROUP BY 절의 표현식이나 집계 함수를 사용한 표현식만 기술할 수 있다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre># deptno별 sal의 합계에 대한 평균값 집계
+SELECT AVG(SUM(sal) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY deptno;
+
+# deptno가 10이나 20인 행을 1020행 그룹, 나머지 행을 3040 행 그룹으로 sal의 합계 값을 집계
+SELECT CASE WHEN deptno IN (10, 20) THEN 1020 ELSE 3040 END AS deptno, SUM(sal) AS sal
+FROM emp
+GROUP BY CASE WHEN deptno IN (10, 20) THEN 1020 ELSE 3040 END
+;
+</pre></table></code></div></div><h2 id="102-group-by-절의-확장-기능"><span class="mr-2">10.2 GROUP BY 절의 확장 기능</span><a href="#102-group-by-절의-확장-기능" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="1021-rollup"><span class="mr-2">10.2.1 ROLLUP</span><a href="#1021-rollup" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>ROLLUP은 지정한 표현식의 계층별 소계와 총계를 집계한다.</p><ul><li>ROLLUP(a) ==&gt; (a),()<li>ROLLUP(a, b) ==&gt; (a, b), (a), ()<li>ROLLUP(a, b, c) ==&gt; (a,b,c), (a,b), (a), ()</ul><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre>SELECT deptno, COUNT(*) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY ROLLUP (deptno)
+ORDER BY 1;
+
+DEPTNO C1
+______ __
+    10 2
+    20 3
+    30 1
+       6
+</pre></table></code></div></div><h3 id="1022-cube"><span class="mr-2">10.2.2 CUBE</span><a href="#1022-cube" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>CUBE는 지정한 표현식의 모든 조합을 집계한다.</p><ul><li>CUBE(a) ==&gt; (a), ()<li>CUBE(a, b) ==&gt; (a, b), (a), (b), ()<li>CUBE(a, b, c) ==&gt; (a, b, c), (a, b), (a, c), (b, c), (a), (b), (c), ()</ul><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre>SELECT deptno, COUNT(*) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY CUBE(deptno)
+ORDER BY 1;
+
+DEPTNO C1
+______ __
+    10 2
+    20 3
+    30 1
+       6
+</pre></table></code></div></div><h3 id="1023-grouping-sets"><span class="mr-2">10.2.3 GROUPING SETS</span><a href="#1023-grouping-sets" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>GROUPING SETS은 지정한 행 그룹으로 행을 집계한다. 행 그룹으로 ROLLUP과 CUBE를 사용할 수도 있다.</p><ul><li>GROUPING SET(a, b) ==&gt; (a), (b)<li>GROUPING SET((a, b), a, ()) ==&gt; (a, b), (a), ()<li>GROUPING SET(a, ROLLUP, (b)) ==&gt; (a), (b), ()<li>GROUPING SET(a, ROLLUP, (b, c)) ==&gt; (a), (b, c), (b), ()<li>GROUPING SET(a, b, ROLLUP, (c)) ==&gt; (a), (b), (c), ()</ul><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre><td class="rouge-code"><pre>SELECT deptno, job, COUNT(*) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY GROUPING SETs (deptno, job)
+ORDER BY 1, 2;
+
+DEPTNO JOB       C1
+______ _________ __
+    10           2
+    20           3
+    30           1
+       ANALYST   2
+       MANAGER   2
+       PERSIDENT 1
+
+SELECT deptno, job, COUNT(*) AS c1
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY GROUPING SETs (deptno, ROLLUP, job)
+ORDER BY 1, 2;
+
+DEPTNO JOB       C1
+______ _________ __
+    10           2
+    20           3
+    30           1
+       ANALYST   2
+       MANAGER   2
+       PERSIDENT 1
+                 6
+</pre></table></code></div></div><h3 id="1024-조합-열"><span class="mr-2">10.2.4 조합 열</span><a href="#1024-조합-열" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>조합 열은 하나의 단위로 처리되는 열의 조합이다.</p><ul><li>ROLLUP((a, b)) ==&gt; (a, b), ()<li>ROLLUP(a,(b, c)) ==&gt; (a, b, c), (a), ()<li>ROLLUP((a,b), c) ==&gt; (a, b, c), (a, b), ()</ul><h3 id="1025-연결-그룹"><span class="mr-2">10.2.5 연결 그룹</span><a href="#1025-연결-그룹" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>연결 그룹을 사용하면 행 그룹을 간결하게 작성할 수 있다.</p><ul><li>a, ROLLUP, (b) ==&gt; (a, b), (a)<li>a, ROLLUP, (b, c) ==&gt; (a, b, c), (a, b), (a)<li>a, ROLLUP, (b), ROLLUP (c) ==&gt; (a, b, c), (a, b), (a, c), (a)<li>GROUPING SETS(a, b), GROUPING SETS(c, d) ==&gt; (a, c), (a, d), (b, c), (b, d)</ul><h3 id="1026-관련-함수"><span class="mr-2">10.2.6 관련 함수</span><a href="#1026-관련-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p><strong>GROUPING 함수</strong></p><p>GROUPING은 expr이 행 그룹에 포함되면 0, 포함되지 않으면 1을 반환한다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>SELECT deptno, job, COUNT(*) AS c1
+    , GROUPING(deptno) AS g1, GROUPING(job) AS g2
+FROM emp
+WHERE sal &gt; 2000
+GROUP BY ROLLUP (deptno, job)
+ORDER BY 1, 2;
+</pre></table></code></div></div><p><strong>GROUPING_ID 함수</strong></p><p>GROUPING_ID는 GROUPING 함수의 결과 값을 연결한 값의 비트 벡터에 해당하는 숫자 값을 반환한다.</p><p><strong>GROUP_ID 함수</strong></p><p>GROUP_ID는 중복되지 않은 행 그룹은 0, 중복된 행 그룹은 1을 반환한다.</p><h2 id="103-having-절"><span class="mr-2">10.3 HAVING 절</span><a href="#103-having-절" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>HAVING 절을 사용하면 조회할 행 그룹을 선택할 수 있다. (WHERE 절과 유사하게 동작한다.) WHERE 절은 GROUP BY 절보다 먼저 수행되기 때문에 집계 함수를 사용하면 에러가 발생한다. 이때 HAVING 절을 사용하면 에러가 발생하지 않는다. (GROUP BY 절 없이도 사용가능하다.)</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+</pre><td class="rouge-code"><pre>SELECT SUM(sal) AS sal FROM emp HAVING SUM(sal) &gt; 2000;
+</pre></table></code></div></div><p>HAVING 절은 SELECT 절보다 먼저 수행되고, SELECT 절에 기술되지 않는 집계 함수를 사용해도 무방하다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre># 집계 후 HAVING 절에서 행 그룹 전체를 제외(비효율적임)
+SELECT deptno, SUM(sal) AS sal
+FROM emp
+GROUP BY deptno
+HAVING deptno &lt;&gt; 30
+ORDER BY 1;
+
+# WHERE 절에서 집계 대상이 아닌 행 제외(바람직)
+SELECT deptno, SUM(sal) AS sal
+FROM emp
+WHERE deptno &lt;&gt; 30
+GROUP BY deptno
+ORDER BY 1;
+</pre></table></code></div></div><p>HAVING절에서 GROUP_ID 함수를 사용하면 중복된 행 그룹을 제외할 수 있다.</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/book/'>BOOK</a>, <a href='/categories/%EB%B6%88%EC%B9%9C%EC%A0%88%ED%95%9C-sql-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/'>불친절한 SQL 프로그래밍</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/sql/" class="post-tag no-text-decoration" >sql</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=10.+GROUP+BY+%EC%A0%88%EA%B3%BC+HAVING+%EC%A0%88+-+Hyeonsu+Lim&url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F10.Group-by-%25EC%25A0%2588%25EA%25B3%25BC-having-%25EC%25A0%2588%2F" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=10.+GROUP+BY+%EC%A0%88%EA%B3%BC+HAVING+%EC%A0%88+-+Hyeonsu+Lim&u=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F10.Group-by-%25EC%25A0%2588%25EA%25B3%25BC-having-%25EC%25A0%2588%2F" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F10.Group-by-%25EC%25A0%2588%25EA%25B3%25BC-having-%25EC%25A0%2588%2F&text=10.+GROUP+BY+%EC%A0%88%EA%B3%BC+HAVING+%EC%A0%88+-+Hyeonsu+Lim" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div><script src="https://utteranc.es/client.js" repo="Limhyeonsu/Limhyeonsu.github.io" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recently Updated</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/15.Top-N%EC%BF%BC%EB%A6%AC/">15. Top-N 쿼리</a><li><a href="/posts/09.%EB%A9%B4%EC%A0%91%EB%AC%B8%EC%A0%9C/">09. 면접문제</a><li><a href="/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/">14. 분석함수</a><li><a href="/posts/07.%EA%B8%B0%EC%88%A0%EC%A0%81-%EB%AC%B8%EC%A0%9C/">07. 기술적 문제</a><li><a href="/posts/06.bigO/">06. big-O</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/13.%EC%A7%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90/"><div class="card-body"> <em class="timeago small" data-ts="1676382217" > 2023-02-14 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>13. 집합 연산자</h3><div class="text-muted small"><p> 집합 연산자는 데이터 집합을 연결한다는 점에서 조인과 유사하게 동작한다. 조인은 데이터 집합을 수직으로 연결하고, 집합 연산자는 데이터 집합을 수평으로 연결한다. 13.1 기본 문법 13.1.1 UNION ALL 연산자 UNION ALL 연산자는 데이터 집합을 수평으로 연결한다. 기술 순서대로 데이터 집합이 반환된다. 1 2 3 4 # t1 테...</p></div></div></a></div><div class="card"> <a href="/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/"><div class="card-body"> <em class="timeago small" data-ts="1676638537" > 2023-02-17 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>14. 분석함수</h3><div class="text-muted small"><p> 분석함수는 집계 함수의 확장 기능으로 생각할 수 있다. 집계 함수는 행 그룹으로 값을 집계하고, 분석 함수는 파티션과 윈도우로 값을 집계한다. 집계 함수는 행 그룹 별로 단일 행을 반환하기 때문에 데이터 집합이 변경되지만, 분석 함수는 데이터 집합을 변경하지 않고 값을 집계한다. 데이터 집합이 변경되지 않기 때문에 원본 값과 집계 값을 함께 분석할 ...</p></div></div></a></div><div class="card"> <a href="/posts/1.%EB%8D%B0%EC%9D%B4%ED%84%B0/"><div class="card-body"> <em class="timeago small" data-ts="1669729642" > 2022-11-29 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>1. 데이터</h3><div class="text-muted small"><p> 1.1 데이터 데이터에 대한 정의 해석할 수 있는 의미를 가진 기호 정성적 또는 정량적 변수 값의 집합 숫자처럼 양으로 측정할 수 있는 데이터를 정량적, 텍스트나 이미지처럼 양으로 측정할 수 없는 데이터를 정성적 데이터라고 한다. 또 정량적 데이터는 구조화되어 저장되기 때문에 정형 데이터, 정성적 데이터는 비정형 데이터라고 부른다. SQL...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/19.JPA-%EC%9E%A0%EA%B8%88-%EA%B8%B0%EB%B2%95/" class="btn btn-outline-primary" prompt="Older"><p>19. JPA 잠금 기법</p></a> <a href="/posts/11.%EC%A1%B0%EC%9D%B8/" class="btn btn-outline-primary" prompt="Newer"><p>11. 조인</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2023 <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/lozad/dist/lozad.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1/dayjs.min.js,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.bundle.min.js"></script> <script defer src="/app.js"></script>

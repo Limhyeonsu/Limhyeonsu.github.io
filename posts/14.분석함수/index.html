@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.3.2" /><meta property="og:title" content="분석함수" /><meta property="og:locale" content="en" /><meta name="description" content="분석함수는 집계 함수의 확장 기능으로 생각할 수 있다. 집계 함수는 행 그룹으로 값을 집계하고, 분석 함수는 파티션과 윈도우로 값을 집계한다." /><meta property="og:description" content="분석함수는 집계 함수의 확장 기능으로 생각할 수 있다. 집계 함수는 행 그룹으로 값을 집계하고, 분석 함수는 파티션과 윈도우로 값을 집계한다." /><link rel="canonical" href="https://limhyeonsu.github.io/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/" /><meta property="og:url" content="https://limhyeonsu.github.io/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/" /><meta property="og:site_name" content="Hyeonsu Lim" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2023-02-17T21:55:37+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="분석함수" /><meta name="twitter:site" content="@imhyeon99494867" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-05-11T22:16:28+09:00","datePublished":"2023-02-17T21:55:37+09:00","description":"분석함수는 집계 함수의 확장 기능으로 생각할 수 있다. 집계 함수는 행 그룹으로 값을 집계하고, 분석 함수는 파티션과 윈도우로 값을 집계한다.","headline":"분석함수","mainEntityOfPage":{"@type":"WebPage","@id":"https://limhyeonsu.github.io/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/"},"url":"https://limhyeonsu.github.io/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/"}</script><title>14. 분석함수 | Hyeonsu Lim</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Hyeonsu Lim"><meta name="application-name" content="Hyeonsu Lim"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" /assets/img/profile_img.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Hyeonsu Lim</a></div><div class="site-subtitle font-italic">Developer</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/Limhyeonsu" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/imhyeon99494867" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['gustn72096','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>14. 분석함수</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>14. 분석함수</h1><div class="post-meta text-muted"><div> By <em> <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1676638537" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-02-17 </em> </span> <span> Updated <em class="timeago" data-ts="1683810988" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-05-11 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="2176 words"> <em>12 min</em> read</span></div></div></div><div class="post-content"><p>분석함수는 집계 함수의 확장 기능으로 생각할 수 있다. 집계 함수는 행 그룹으로 값을 집계하고, 분석 함수는 파티션과 윈도우로 값을 집계한다.</p><p>집계 함수는 행 그룹 별로 단일 행을 반환하기 때문에 데이터 집합이 변경되지만, 분석 함수는 데이터 집합을 변경하지 않고 값을 집계한다. 데이터 집합이 변경되지 않기 때문에 원본 값과 집계 값을 함께 분석할 수 있는 장점이 있다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre><td class="rouge-code"><pre># 집계 함수를 사용한 버전
+SELECT a.empno, a.sal, b.sal AS c1, a.sal / b.sal AS c2
+FROM emp a,
+    (SELECT deptno, SUM(sal) AS sal FROM emp GROUP BY deptno) b
+WHERE a.deptno = 10
+AND b.deptno = a.deptno
+ORDER BY 1;
+
+# 분석 함수를 사용한 버전
+SELECT empno, sal, SUM(sal) OVER () AS c1, RETIO_TO_REPORT(sal) OVER () AS c2
+FROM emp
+WHERE deptno = 10
+ORDER BY 1;
+</pre></table></code></div></div><h2 id="141-기본-문법"><span class="mr-2">14.1 기본 문법</span><a href="#141-기본-문법" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>분석 함수는 <code class="language-plaintext highlighter-rouge">OVER</code> 키워드를 사용한다. 집계 함수에 OVER 키워드를 기술하면 분석 함수로 동작한다.</p><p>OVER 키워드에는 ANALYTIC 절을 기술할 수 있고, 이 절은 QUERY PARTITION 절, ORDER BY 절, WINDOWING 절로 구성된다.</p><h3 id="1411-query-partition-절"><span class="mr-2">14.1.1 QUERY PARTITION 절</span><a href="#1411-query-partition-절" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>QUERY PARTITION 절은 GROUP BY 절과 유사하게 동작한다. QUERY PARTITION 절을 생략하면 전체 행이 하나의 파티션으로 동작한다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+</pre><td class="rouge-code"><pre>SELECT empno, job, sal
+      , SUM(sal) OVER (PARTITION BY job) AS c1 -- job별 합계
+      , SUM(sal) OVER () AS c2 -- 총 합계
+FROM emp
+WHERE deptno = 30
+ORDER BY 2, 1;
+</pre></table></code></div></div><h3 id="1412-order-by-절"><span class="mr-2">14.1.2 ORDER BY 절</span><a href="#1412-order-by-절" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre>SELECT empno, sal, SUM(sal) OVER (ORDER BY sa1, empno) AS c1
+FROM emp
+WHERE deptno = 30
+ORDER BY 2, 1;
+</pre></table></code></div></div><h3 id="1413-windowing-절"><span class="mr-2">14.1.3 WINDOWING 절</span><a href="#1413-windowing-절" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>WINDOWING 절로 파티션의 윈도우를 지정할 수 있다. 윈도우는 ROWS 방식이나 RANGE 방식으로 지정할 수 있다.</p><p>[윈도우 범위를 지정하는 키워드]</p><ul><li>BETWEEN … AND … : 윈도우의 시작과 끝<li>UNBOUNDED PRECEDING : 앞쪽 끝<li>UNBOUNDED FOLLOWING : 뒤쪽 끝<li>CURRENT ROW : 현재 행<li>value_expr PRECEDING : ROWS - 현재 행에서 앞쪽으로 value_expr 만큼 이동, RANGE - 현재 값에서 value_expr 을 가감<li>value_exp FOLLOWING : ROWS - 현재 행에서 뒤쪽으로 value_expr 만큼 이동, RANGE - 현재 값에서 value_expr 을 가감</ul><p>341~350p</p><h3 id="1414-keep-키워드"><span class="mr-2">14.1.4 KEEP 키워드</span><a href="#1414-keep-키워드" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>KEEP 키워드를 사용하면 ANALYTIC 절에 QUERY PARTITION 절만 사용할 수 있다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre># job 파티션 별 sal가 최소인 행을 대상으로 comm의 최고값을 조회
+SELECT ename, job, sal, comm, MAX(comm) KEEP(DENSE_RANK FIRST ORDER BY sal) OVER (PARTITION BY job) AS c1
+FROM emp
+WHERE deptno = 30
+ORDER BY 2,3,4;
+</pre></table></code></div></div><h3 id="1415-주의사항"><span class="mr-2">14.1.5 주의사항</span><a href="#1415-주의사항" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ol><li>RANGE 방식에 value_expr을 지정하면 ORDER BY 절에 숫자 값이나 날짜 값을 사용해야 한다<li>RANGE 방식에 value_expr을 지정하면 정렬 표현식을 1개만 사용할 수 있다<li>분석함수는 SELECT 절과 ORDET BY 절에 사용할 수 있다</ol><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre><td class="rouge-code"><pre># 1번 주읫사항
+SELECT job, sal, sum(sal) OVER (ORDER BY job RANGE 1 PRECEDING) as c1
+FROM emp
+WHERE deptno = 30;
+
+# 2번 주의사항
+SELECT job, sal, SUM(sal) OVER (ORDER BY sal, comm RANGE 1 PRECEDING) as c1
+FROM emp
+WHERE deptno = 30;
+
+# 3번 주의 사항
+SELECT deptno, ename, sal
+FROM emp
+WHERE SUM(sal) OVER (PARTITION BY deptno) &gt;= 1000;
+</pre></table></code></div></div><h2 id="142-분석-함수"><span class="mr-2">14.2 분석 함수</span><a href="#142-분석-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>분석 함수의 대부분은 집계 함수에 OVER 키워드를 기술하는 방식으로 사용한다.</p><h3 id="1421-기본-함수"><span class="mr-2">14.2.1 기본 함수</span><a href="#1421-기본-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>COUNT 함수 : 전체 행의 개수나 expr의 개수를 반환<li>MIN 함수 : expr의 최저 값을 반환<li>MAX 함수 : expr의 최고 값을 반환<li>SUM 함수 : expr의 합계 값을 반환<li>AVG 함수 : expr의 평균 값을 반환 (358~361p)</ul><h3 id="1422-통계-함수"><span class="mr-2">14.2.2 통계 함수</span><a href="#1422-통계-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>STDDEV 함수 : expr의 표준 편차를 반환<li>VARIANCE 함수 : expr의 분산을 반환</ul><p>이외에도 다음의 통계 함수를 분석 함수로 사용할 수 있다.</p><p><img data-src="/assets/img/posting_img/book/불친절한SQL/분석함수.jpeg" width="700px" data-proofer-ignore></p><h3 id="1423-순위-함수"><span class="mr-2">14.2.3 순위 함수</span><a href="#1423-순위-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>순위 함수는 정렬 조건에 따른 순위를 반환한다. 순위 집계함수는 가상의 행을 생성하지만 순위 분석 함수는 실제의 행으로 값을 계산한다.</p><ul><li>RANK 함수 : expr이 동일하면 동순위를 부여하고 다음 순위는 동순위의 개수만큼 건너뛴다.<li>DENSE_RANK 함수 : 동순위가 존재하더라도 다음 순위를 이어서 부여한다.<li>ROW_NUMBER 함수 : 고유한 순번을 반환, 정렬 값이 동일하더라도 다른 순번을 부여하기 때문에 결과 값이 변경될 수 있다.<li>NTILE 함수 : order_by_clause에 따라 행을 정렬하고, expr의 개수만큼 버킷을 생성한 후 행에 해당하는 버킷 번호를 할당한다. NTILE 함수로 생성한 버킷으로 행을 집계할 수 있다. 367~369p</ul><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre># 950~1250 1번 버킷, 1500~2850 2번 버킷...
+SELECT sal
+     , NTILE(1) OVER (ORDER BY sal) AS c1, NTILE(2) OVER (ORDER BY sal) AS c2
+     , NTILE(3) OVER (ORDER BY sal) AS c3, NTILE(4) OVER (ORDER BY sal) AS c4
+     , NTILE(5) OVER (ORDER BY sal) AS c5, NTILE(6) OVER (ORDER BY sal) AS c6
+     , NTILE(7) OVER (ORDER BY sal) AS c7
+FROM emp
+WHERE deptno = 30
+ORDER BY 1;
+</pre></table></code></div></div><ul><li>CUME_DIST 함수 : 누적 분포 값을 반환한다. (0 &lt; y &lt;= 1)<li>PERCENT_RANK 함수 : 백분위 순위 값을 반환한다. (0 &lt;= y &lt;= 1)<li>RATIO_TO_REPORT 함수 : expr의 합계에 대한 현재 expr의 비율을 반환한다.</ul><h3 id="1424-분포-함수"><span class="mr-2">14.2.4 분포 함수</span><a href="#1424-분포-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>분포 함수는 분포 모형에 따른 분포 값을 반환한다.</p><ul><li>PERCENTILE_COUNT 함수 : 연속 분포 모델에서 expr에 지정한 백분위 값에 해당하는 값을 반환한다.<li>PERCENTILE_DISC 함수 : 이산 분포 모델에서 expr에 지정한 백분위 값에 해당하는 값을 반환한다.<li>MEDIAN 함수 : 연속 분포 모형을 가진 중앙값을 반환한다.</ul><h3 id="1425-순차-함수"><span class="mr-2">14.2.5 순차 함수</span><a href="#1425-순차-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>순차에 해당하는 값을 가져오는 함수다.</p><ul><li>FIRST_VALUE 함수 : 윈도우 첫 행의 expr을 반환한다.<li>LAST_VALUE 함수 : 윈도우 끝 행의 expr을 반환한다.<li>NTH_VALUE 함수 : 윈도우 n번째 행의 measure_expr을 반환한다.</ul><h3 id="1426-기타-함수"><span class="mr-2">14.2.6 기타 함수</span><a href="#1426-기타-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>LAG 함수 : 현재 행에서 offset 이전 행의 value_expr을 반환한다.<li>LEAD 함수 : 현재 행에서 offset 이후 행의 value_expr을 반환한다.</ul><p>LAG 함수와 LEAD 함수는 행 기준으로 동작하므로 분석 함수의 정렬 값이 고유하지 않으면 값이 무작위로 변경될 수 있다.</p><ul><li>LISTAGG 함수 : measure_expr을 order_By_clause로 정렬한 후 delimiter로 구분하여 연결한 값을 반환한다.</ul><h2 id="143-활용-예제"><span class="mr-2">14.3 활용 예제</span><a href="#143-활용-예제" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="선분-이력-전환-1"><span class="mr-2">선분 이력 전환 1</span><a href="#선분-이력-전환-1" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>점 이력을 선분 이력으로 전환해보자</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>-- LEAD 함수를 사용하면 점 이력을 선분 이력으로 변환할 수 있다.
+SELECT cd, dt AS bg_dt
+      , LEAD(dt - 1, 1, DATE, '9999-12-31') OVER (ORDER BY dt) AS ed_dt, v1
+FROM t1
+ORDER BY 1, 2;
+</pre></table></code></div></div><h3 id="선분-이력-전환-2"><span class="mr-2">선분 이력 전환 2</span><a href="#선분-이력-전환-2" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>월별 이력을 선분 이력으로 전환해보자</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre>-- ROW_NUMBER 함수로 생성한 순번의 차를 이용하여 행 그룹을 생성
+SELECT cd, MIN(ym) AS bg_ym
+      , CASE WHEN MAX(r1) = MAX(cn) THEN '999912' ELSE MAX(ym) END AS ed_ym, v1
+FROM (SELECT a.*
+        , COUNT(*) OVER (PARTITION BY a.cd) AS cn
+        , ROW_NUMBER() OVER (PARTITION BY a.cd ORDER BY a.ym) AS r1
+        , ROW_NUMBER() OVER (PARTITION BY a.cd, a.v1 ORDER BY a.ym) AS r2
+        FROM t1 a)
+GROUP BY cd, v1, r1 - r2
+ORDER BY 1, 2;
+</pre></table></code></div></div><h3 id="선분-이력-병합"><span class="mr-2">선분 이력 병합</span><a href="#선분-이력-병합" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+</pre><td class="rouge-code"><pre>SELECT cd, MIN(bg) AS bg, MAX(ed) AS ed, yn
+FROM(SELECT a.*
+      , ROW_NUMBER() OVER (PARTITION BY cd ORDER BY bg) AS r1
+      , ROW_NUMBER() OVER (PARTITION BY cd, yn ORDER BY bg) AS r2
+      FROM t1 a)
+GROUP BY cd, yn, CASE WHEN yn = 'N' THEN r1 - r2 ELSE r1 END
+ORDER BY 1, 2;
+</pre></table></code></div></div><h3 id="행-패턴-검색"><span class="mr-2">행 패턴 검색</span><a href="#행-패턴-검색" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre>WITH w1 AS (
+  SELECT a.*
+      , NVL (SIGN (v1 - LAG(v1) OVER (PARTITION BY cd ORDER BY dt)), 0) AS df
+  FROM t1 a)
+  SELECT a.*
+      , ROw_NUMBER() OVER (PARTITION BY cd ORDER BY dt) AS r1
+      , ROw_NUMBER() OVER (PARTITION BY cd, df ORDER BY dt) AS r2
+  FROM w1 a
+ORDER BY 1m 2;
+</pre></table></code></div></div><h3 id="선형-보간"><span class="mr-2">선형 보간</span><a href="#선형-보간" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>행 복제 기법을 사용하여 데이터가 존재하지 않는 구간의 행을 생성하고, LEAD 함수를 사용하여 보간 값을 계산한다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre><td class="rouge-code"><pre>SELECT a.dt + b.lv - 1 AS dt,
+      ROUND (a.v1 + (a.v1_df / a.dn) * (b.lv - 1), 2) AS v1
+FROM (SELECT a.*,
+        NVL(LEAD(a.v1) OVER (ORDER BY a.dt) - a.v1, 0) AS v1_df,
+        NVL(LEAD(a.dt) OVER (ORDER BY a.dt) - a.dt, 0) AS dn
+      FROM t1 a) a,
+      (SELECT LEVEL AS 1v FROM DUAL CONNECT BY LEVEL &lt;=10)b
+WHERE b.1v &lt;= a.dn
+ORDER BY 1,
+
+</pre></table></code></div></div></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/book/'>BOOK</a>, <a href='/categories/%EB%B6%88%EC%B9%9C%EC%A0%88%ED%95%9C-sql-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D/'>불친절한 SQL 프로그래밍</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/sql/" class="post-tag no-text-decoration" >sql</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=14.+%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98+-+Hyeonsu+Lim&url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F14.%25EB%25B6%2584%25EC%2584%259D%25ED%2595%25A8%25EC%2588%2598%2F" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=14.+%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98+-+Hyeonsu+Lim&u=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F14.%25EB%25B6%2584%25EC%2584%259D%25ED%2595%25A8%25EC%2588%2598%2F" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F14.%25EB%25B6%2584%25EC%2584%259D%25ED%2595%25A8%25EC%2588%2598%2F&text=14.+%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98+-+Hyeonsu+Lim" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div><script src="https://utteranc.es/client.js" repo="Limhyeonsu/Limhyeonsu.github.io" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recently Updated</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/15.Top-N%EC%BF%BC%EB%A6%AC/">15. Top-N 쿼리</a><li><a href="/posts/09.%EB%A9%B4%EC%A0%91%EB%AC%B8%EC%A0%9C/">09. 면접문제</a><li><a href="/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/">14. 분석함수</a><li><a href="/posts/07.%EA%B8%B0%EC%88%A0%EC%A0%81-%EB%AC%B8%EC%A0%9C/">07. 기술적 문제</a><li><a href="/posts/06.bigO/">06. big-O</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/13.%EC%A7%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90/"><div class="card-body"> <em class="timeago small" data-ts="1676382217" > 2023-02-14 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>13. 집합 연산자</h3><div class="text-muted small"><p> 집합 연산자는 데이터 집합을 연결한다는 점에서 조인과 유사하게 동작한다. 조인은 데이터 집합을 수직으로 연결하고, 집합 연산자는 데이터 집합을 수평으로 연결한다. 13.1 기본 문법 13.1.1 UNION ALL 연산자 UNION ALL 연산자는 데이터 집합을 수평으로 연결한다. 기술 순서대로 데이터 집합이 반환된다. # t1 테이블이 반환된 ...</p></div></div></a></div><div class="card"> <a href="/posts/1.%EB%8D%B0%EC%9D%B4%ED%84%B0/"><div class="card-body"> <em class="timeago small" data-ts="1669729642" > 2022-11-29 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>1. 데이터</h3><div class="text-muted small"><p> 1.1 데이터 데이터에 대한 정의 해석할 수 있는 의미를 가진 기호 정성적 또는 정량적 변수 값의 집합 숫자처럼 양으로 측정할 수 있는 데이터를 정량적, 텍스트나 이미지처럼 양으로 측정할 수 없는 데이터를 정성적 데이터라고 한다. 또 정량적 데이터는 구조화되어 저장되기 때문에 정형 데이터, 정성적 데이터는 비정형 데이터라고 부른다. SQL...</p></div></div></a></div><div class="card"> <a href="/posts/2.%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%AA%A8%EB%8D%B8%EB%A7%81/"><div class="card-body"> <em class="timeago small" data-ts="1669816522" > 2022-11-30 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>2. 데이터 모델링</h3><div class="text-muted small"><p> 2.1 데이터 모델 데이터 모델은 현실 세계를 데이터베이스로 구축할 수 있도록 추상화한 것이다. 예) 에스프레소, 아메리카노 &amp;gt; 커피, 주스 &amp;gt; 음료, 간식 &amp;gt; 음식, 소품 &amp;gt; 상품 데이터 모델은 상세화 수준에 따라 개념 데이터 모델, 논리 데이터 모델, 물리 데이터 모델로 구분된다. 요구사항을 분석하여 개념 데이터 모델을 설...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/13.%EC%A7%91%ED%95%A9-%EC%97%B0%EC%82%B0%EC%9E%90/" class="btn btn-outline-primary" prompt="Older"><p>13. 집합 연산자</p></a> <a href="/posts/01.-%EC%95%8C%EC%95%84%EB%91%90%EC%96%B4%EC%95%BC-%ED%95%A0-%EC%8B%9C%EC%8A%A4%ED%85%9C,-%EC%9D%B8%ED%94%84%EB%9D%BC-%EC%A7%80%EC%8B%9D/" class="btn btn-outline-primary" prompt="Newer"><p>01. 알아두어야 할 시스템, 인프라 지식</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2023 <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/lozad/dist/lozad.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1/dayjs.min.js,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.bundle.min.js"></script> <script defer src="/app.js"></script>

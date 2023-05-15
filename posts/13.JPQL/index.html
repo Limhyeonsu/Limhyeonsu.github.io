@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" ><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><meta name="generator" content="Jekyll v4.3.2" /><meta property="og:title" content="JPQL" /><meta property="og:locale" content="en" /><meta name="description" content="01. JPQL JPQL은 JPA에서 사용하는 쿼리 언어이다. SQL의 쿼리 언어와 매우 유사하나 테이블과 칼럼 이름 대신 매핑한 엔티티 이름과 속성 이름을 사용한다는 점이 차이가 있다." /><meta property="og:description" content="01. JPQL JPQL은 JPA에서 사용하는 쿼리 언어이다. SQL의 쿼리 언어와 매우 유사하나 테이블과 칼럼 이름 대신 매핑한 엔티티 이름과 속성 이름을 사용한다는 점이 차이가 있다." /><link rel="canonical" href="https://limhyeonsu.github.io/posts/13.JPQL/" /><meta property="og:url" content="https://limhyeonsu.github.io/posts/13.JPQL/" /><meta property="og:site_name" content="Hyeonsu Lim" /><meta property="og:type" content="article" /><meta property="article:published_time" content="2023-01-10T20:39:44+09:00" /><meta name="twitter:card" content="summary" /><meta property="twitter:title" content="JPQL" /><meta name="twitter:site" content="@imhyeon99494867" /> <script type="application/ld+json"> {"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2023-01-20T15:33:56+09:00","datePublished":"2023-01-10T20:39:44+09:00","description":"01. JPQL JPQL은 JPA에서 사용하는 쿼리 언어이다. SQL의 쿼리 언어와 매우 유사하나 테이블과 칼럼 이름 대신 매핑한 엔티티 이름과 속성 이름을 사용한다는 점이 차이가 있다.","headline":"JPQL","mainEntityOfPage":{"@type":"WebPage","@id":"https://limhyeonsu.github.io/posts/13.JPQL/"},"url":"https://limhyeonsu.github.io/posts/13.JPQL/"}</script><title>13. JPQL | Hyeonsu Lim</title><link rel="apple-touch-icon" sizes="180x180" href="/assets/img/favicons/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png"><link rel="manifest" href="/assets/img/favicons/site.webmanifest"><link rel="shortcut icon" href="/assets/img/favicons/favicon.ico"><meta name="apple-mobile-web-app-title" content="Hyeonsu Lim"><meta name="application-name" content="Hyeonsu Lim"><meta name="msapplication-TileColor" content="#da532c"><meta name="msapplication-config" content="/assets/img/favicons/browserconfig.xml"><meta name="theme-color" content="#ffffff"><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin><link rel="preconnect" href="https://fonts.googleapis.com" ><link rel="dns-prefetch" href="https://fonts.googleapis.com" ><link rel="preconnect" href="https://cdn.jsdelivr.net" ><link rel="dns-prefetch" href="https://cdn.jsdelivr.net" ><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato&family=Source+Sans+Pro:wght@400;600;700;900&display=swap"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.11.2/css/all.min.css"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magnific-popup@1/dist/magnific-popup.min.css"> <script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script><body data-spy="scroll" data-target="#toc" data-topbar-visible="true"><div id="sidebar" class="d-flex flex-column align-items-end"><div class="profile-wrapper text-center"><div id="avatar"> <a href="/" alt="avatar" class="mx-auto"> <img src=" /assets/img/profile_img.jpg " alt="avatar" onerror="this.style.display='none'"> </a></div><div class="site-title mt-3"> <a href="/">Hyeonsu Lim</a></div><div class="site-subtitle font-italic">Developer</div></div><ul class="w-100"><li class="nav-item"> <a href="/" class="nav-link"> <i class="fa-fw fas fa-home ml-xl-3 mr-xl-3 unloaded"></i> <span>HOME</span> </a><li class="nav-item"> <a href="/categories/" class="nav-link"> <i class="fa-fw fas fa-stream ml-xl-3 mr-xl-3 unloaded"></i> <span>CATEGORIES</span> </a><li class="nav-item"> <a href="/tags/" class="nav-link"> <i class="fa-fw fas fa-tag ml-xl-3 mr-xl-3 unloaded"></i> <span>TAGS</span> </a><li class="nav-item"> <a href="/archives/" class="nav-link"> <i class="fa-fw fas fa-archive ml-xl-3 mr-xl-3 unloaded"></i> <span>ARCHIVES</span> </a><li class="nav-item"> <a href="/about/" class="nav-link"> <i class="fa-fw fas fa-info-circle ml-xl-3 mr-xl-3 unloaded"></i> <span>ABOUT</span> </a></ul><div class="sidebar-bottom mt-auto d-flex flex-wrap justify-content-center align-items-center"> <a href="https://github.com/Limhyeonsu" aria-label="github" target="_blank" rel="noopener"> <i class="fab fa-github"></i> </a> <a href="https://twitter.com/imhyeon99494867" aria-label="twitter" target="_blank" rel="noopener"> <i class="fab fa-twitter"></i> </a> <a href=" javascript:location.href = 'mailto:' + ['gustn72096','gmail.com'].join('@')" aria-label="email" > <i class="fas fa-envelope"></i> </a> <a href="/feed.xml" aria-label="rss" > <i class="fas fa-rss"></i> </a></div></div><div id="topbar-wrapper" class="row justify-content-center"><div id="topbar" class="col-11 d-flex h-100 align-items-center justify-content-between"> <span id="breadcrumb"> <span> <a href="/"> Home </a> </span> <span>13. JPQL</span> </span> <i id="sidebar-trigger" class="fas fa-bars fa-fw"></i><div id="topbar-title"> Post</div><i id="search-trigger" class="fas fa-search fa-fw"></i> <span id="search-wrapper" class="align-items-center"> <i class="fas fa-search fa-fw"></i> <input class="form-control" id="search-input" type="search" aria-label="search" autocomplete="off" placeholder="Search..."> </span> <span id="search-cancel" >Cancel</span></div></div><div id="main-wrapper"><div id="main"><div class="row"><div id="core-wrapper" class="col-12 col-lg-11 col-xl-8"><div class="post pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><h1 data-toc-skip>13. JPQL</h1><div class="post-meta text-muted"><div> By <em> <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a> </em></div><div class="d-flex"><div> <span> Posted <em class="timeago" data-ts="1673350784" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-01-10 </em> </span> <span> Updated <em class="timeago" data-ts="1674196436" data-toggle="tooltip" data-placement="bottom" data-tooltip-df="llll" > 2023-01-20 </em> </span> <span class="readtime" data-toggle="tooltip" data-placement="bottom" title="3060 words"> <em>17 min</em> read</span></div></div></div><div class="post-content"><h2 id="01-jpql"><span class="mr-2">01. JPQL</span><a href="#01-jpql" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>JPQL은 JPA에서 사용하는 쿼리 언어이다. SQL의 쿼리 언어와 매우 유사하나 테이블과 칼럼 이름 대신 매핑한 엔티티 이름과 속성 이름을 사용한다는 점이 차이가 있다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>//엔티티 이름과 엔티티 속성을 사용한다.
+select
+from Review r
+where r.hotel =:hotel
+order by r.id desc
+</pre></table></code></div></div><h2 id="02-jpql-기본-코드"><span class="mr-2">02. JPQL 기본 코드</span><a href="#02-jpql-기본-코드" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p><code class="language-plaintext highlighter-rouge">select 별칭 from 엔티티이름 as 별칭</code> 엔티티 이름 뒤에는 별칭이 오는데 이 별칭은 엔티티를 참조할 때 사용한다. 별칭은 필수이며 as는 생략할 수 있다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select u from User u"</span><span class="o">,</span> <span class="nc">User</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">User</span><span class="o">&gt;</span> <span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span> <span class="c1">// SQL을 실행하고 그 결과를 리턴</span>
+<span class="k">for</span><span class="o">(</span><span class="nc">User</span> <span class="n">u</span> <span class="o">:</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+
+<span class="c1">//TypedQuery와 달리 타입을 지정하지 않는다.</span>
+<span class="nc">Query</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select u from User u"</span><span class="o">);</span>
+<span class="nc">List</span> <span class="n">users</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="k">for</span><span class="o">(</span><span class="nc">Object</span> <span class="n">o</span> <span class="o">:</span> <span class="n">users</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">User</span> <span class="n">user</span> <span class="o">=</span> <span class="o">(</span><span class="nc">User</span><span class="o">)</span><span class="n">o</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></table></code></div></div><h3 id="21-order-by를-이용한-정렬"><span class="mr-2">2.1 order by를 이용한 정렬</span><a href="#21-order-by를-이용한-정렬" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre>select p from Player p order by p.name asc
+select p from Player p order by p.name desc
+select p from Player p order by p.team.id, p.name
+</pre></table></code></div></div><h2 id="03-검색-조건-지정"><span class="mr-2">03. 검색 조건 지정</span><a href="#03-검색-조건-지정" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Player</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+  <span class="s">"select p from Player p where p.team.id = "</span><span class="no">T1</span><span class="s">", Player.class);
+List&lt;Player&gt; players = query.getResultList();
+
+//인텍스 기반 파라미터를 이용해 입력 파라미터를 지정
+TypedQuery&lt;Player&gt; query2 = em.createQuery(
+  "</span><span class="n">select</span> <span class="n">p</span> <span class="n">from</span> <span class="nc">Player</span> <span class="n">p</span> <span class="n">where</span> <span class="n">p</span><span class="o">.</span><span class="na">team</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="o">?</span> <span class="n">and</span> <span class="n">p</span><span class="o">.</span><span class="na">salary</span> <span class="o">=</span> <span class="o">?</span> <span class="o">,</span> <span class="nc">Player</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">query2</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">0</span><span class="o">,</span> <span class="s">"T1"</span><span class="o">);</span>
+<span class="n">query2</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Player</span><span class="o">&gt;</span> <span class="n">players2</span> <span class="o">=</span> <span class="n">query2</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+<span class="c1">//파라미터 값으로 엔티티 지정</span>
+<span class="c1">//엔티티를 이용하면 연관에 대한 직접 비교를 할 수 있다.</span>
+<span class="nc">Team</span> <span class="n">team</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">Team</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"T1"</span><span class="o">);</span>
+<span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Player</span><span class="o">&gt;</span> <span class="n">query3</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+  <span class="s">"select p from Player p where p.team.id = :team and p.salary &gt; :minSalary , Player.class);
+query3.setParameter("</span><span class="n">team</span><span class="s">", team);
+query3.setParameter("</span><span class="n">minSalary</span><span class="err">"</span><span class="o">,</span> <span class="mi">1000</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Player</span><span class="o">&gt;</span> <span class="n">players3</span> <span class="o">=</span> <span class="n">query3</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></table></code></div></div><h3 id="3-1-비교-연산자"><span class="mr-2">3-1. 비교 연산자</span><a href="#3-1-비교-연산자" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>= :값이 같은지 비교<li><code class="language-plaintext highlighter-rouge">&lt;&gt;</code> : 값이 다른지 비교<li><code class="language-plaintext highlighter-rouge">&lt;, &gt;,&gt;=,&lt;,&lt;=</code> : 값의 크기 비교<li>between : 값이 사이에 포함되는지 비교<li>in, not in : 지정한 목록에 값이 존재하는지 또는 존재하지 않는지 비교<li>like, not like : 지정한 문자열을 포함하는지 검사<li>is null, is not null : 값이 null인지 또는 null이 아닌지</ul><h3 id="3-2-콜렉션-비교"><span class="mr-2">3-2. 콜렉션 비교</span><a href="#3-2-콜렉션-비교" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>특정 엔티티나 값이 콜렉션에 속해있는지 검사하고 싶다면 member of 연산자나 not member of 연산자를 사용하면 된다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="nc">Player</span> <span class="n">player</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">Player</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"P1"</span><span class="o">);</span>
+<span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+  <span class="s">"select t from Team t where :player member of t.players order by t.name"</span><span class="o">,</span> <span class="nc">Team</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"player"</span><span class="o">,</span> <span class="n">player</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">teams</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre># 실제 query 실행
+select t.id, t.name
+from Team
+where ? in (select p.player_id from Player p where t.id = p.team.id)
+order by t.name
+</pre></table></code></div></div><p>is empty, is not empty를 사용하면 엔티티 콜렉션에 대해 콜렉션이 비어있는지 비교할 수 있다.</p><h2 id="3-3-exists-all-any"><span class="mr-2">3-3. exists, all, any</span><a href="#3-3-exists-all-any" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>특정 값이 존재하는지 검사하고 싶을 때 exists, all, any 중 하나를 사용한다.</p><ul><li>exists : 특정 값이 존재 할 때<li>not exists : 특정 값이 존재하지 않을 때<li>all : 서브 쿼리 결과가 조건을 모두 충족하는지 검사<li>any : 서브 쿼리 결과가 조건을 충족하는 대상중 하나 이상 충족하는지 검사</ul><h2 id="04-페이징-처리"><span class="mr-2">04. 페이징 처리</span><a href="#04-페이징-처리" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>Query, TypedQuery를 사용하면 간단하게 페이징 처리를 할 수 있다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Review</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select r from Review r where r.hotel.id = :hotelId order by r.id desc"</span><span class="o">,</span> <span class="nc">Review</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setParameter</span><span class="o">(</span><span class="s">"hotelId"</span><span class="o">,</span> <span class="s">"H-001"</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setFirstResult</span><span class="o">(</span><span class="mi">10</span><span class="o">);</span>   <span class="c1">//조회할 첫 번째 결과의 위치 지정</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">5</span><span class="o">);</span>     <span class="c1">//조회할 최대 갯수</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Review</span><span class="o">&gt;</span> <span class="n">reivews</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultLiat</span><span class="o">();</span>
+</pre></table></code></div></div><h2 id="05-지정-속성-조회"><span class="mr-2">05. 지정 속성 조회</span><a href="#05-지정-속성-조회" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="5-1-배열로-조회하기"><span class="mr-2">5-1. 배열로 조회하기</span><a href="#5-1-배열로-조회하기" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">[]&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select p.id, p.name, p.salary from Player p"</span><span class="o">,</span> <span class="nc">Object</span><span class="o">[].</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">[]&gt;</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+<span class="k">for</span><span class="o">(</span><span class="nc">Object</span><span class="o">[]</span> <span class="nl">row:</span> <span class="n">rows</span><span class="o">)</span> <span class="o">{</span>
+  <span class="nc">String</span> <span class="n">id</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">row</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+  <span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="o">(</span><span class="nc">String</span><span class="o">)</span><span class="n">row</span><span class="o">[</span><span class="mi">1</span><span class="o">];</span>
+  <span class="kt">int</span> <span class="n">salary</span> <span class="o">=</span> <span class="o">(</span><span class="kt">int</span><span class="o">)</span><span class="n">row</span><span class="o">[</span><span class="mi">2</span><span class="o">];</span>
+  <span class="c1">//...</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>select 절에서 선택한 대상이 두 개 이상일 때 결과 타입은 Object 배열이다. Object 배열은 순서대로 값을 보관하기 때문에 배열의 각 데이터를 사용할 때는 위 코드처럼 해당 타입으로 알맞게 변환해주어야 한다.</p><h3 id="5-2-특정-객체로-조회하기"><span class="mr-2">5-2. 특정 객체로 조회하기</span><a href="#5-2-특정-객체로-조회하기" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre><td class="rouge-code"><pre><span class="kd">public</span> <span class="kd">class</span> <span class="nc">IdName</span><span class="o">{</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">id</span><span class="o">;</span>
+  <span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+
+  <span class="kd">public</span> <span class="nf">IdName</span><span class="o">(</span><span class="nc">String</span> <span class="n">id</span><span class="o">,</span> <span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">id</span> <span class="o">=</span> <span class="n">id</span><span class="o">;</span>
+    <span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getId</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">id</span><span class="o">;</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</pre></table></code></div></div><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="c1">//생성자를 이용해서 결과 객체를 생성한다.</span>
+<span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">IdName</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select new com.common.IdName(p.id, p.name) from Player p"</span><span class="o">,</span> <span class="nc">IdName</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">IdName</span><span class="o">&gt;</span> <span class="n">rows</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></table></code></div></div><h2 id="06-한-개-행-조회"><span class="mr-2">06. 한 개 행 조회</span><a href="#06-한-개-행-조회" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>결과가 여러개인 경우 getResultList() 메서드를 이용했다. 결과가 정확하게 한 행인 경우에는 getResultList() 대신에 <code class="language-plaintext highlighter-rouge">getSingleResult()</code> 메서드를 사용할 수 있다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Long</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span><span class="s">"select count(p) from Player p"</span><span class="o">,</span> <span class="nc">Long</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">Long</span> <span class="n">count</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getSingleResult</span><span class="o">();</span>
+</pre></table></code></div></div><p>getSingleResult() 사용시 주의할 점은 <strong>결과가 반드시 1개여야 한다는 것이다.</strong> 결과가 없거나 두 개 이상일 경우 exception이 발생한다.</p><h2 id="07-조인"><span class="mr-2">07. 조인</span><a href="#07-조인" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>JPQL에서는 다음의 세 가지 방식으로 조인을 수행할 수 있다.</p><ul><li>자동 조인<li>명시적 조인<li>where 절에서 조인</ul><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre><td class="rouge-code"><pre>//1. 자동 조인 : Player와 Team은 서로 다른 테이블에 매핑되어 있어 하이버네이트는 두 테이블을 조인한 쿼리를 실행한다.
+select p
+from Player p
+where p.team.name = :teamName
+
+//2. 명시적 조인
+select p
+from Player p
+join p.team t
+where t.name = :teamName
+
+//3. where 절에서 조인
+select u, s
+from User u, UserBestSight s
+where u.email = s.email
+order by u.name
+</pre></table></code></div></div><h2 id="08-집합-함수"><span class="mr-2">08. 집합 함수</span><a href="#08-집합-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><div class="table-wrapper"><table><thead><tr><th>함수<th>리턴타입<th>설명<tbody><tr><td>count<td>long<td>갯수<tr><td>max, min<td>해당 속성 타입<td>최대값/최소값<tr><td>avg<td>Double<td>평균<tr><td>sum<td>속성타입에 따라 다름<td>합계</table></div><h2 id="09-group-by-와-having"><span class="mr-2">09. group by 와 having</span><a href="#09-group-by-와-having" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>SQL의 group by와 동일하게 JPQL의 group by는 지정항 속성을 기준으로 그룹을 나눈다. group by에 having을 사용해서 조건을 지정할 수 있다.</p><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre>//소속 선수가 1명보다 많은 Team의 선수 수와 평균 연봉을 구하는 JPQL
+select t, count(p), avg(p.salary)
+from Team t left join t.players p
+group by t
+having count(p) &gt; 1
+</pre></table></code></div></div><h2 id="10-함수와-연산자"><span class="mr-2">10. 함수와 연산자</span><a href="#10-함수와-연산자" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><h3 id="101-문자열-함수"><span class="mr-2">10.1 문자열 함수</span><a href="#101-문자열-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>CONCAT - 두 개 이상의 문자열을 연결<li>SUBSTRING - 문자열에서 시작 위치부터 지정한 길의에 해당하는 문자열을 구함<li>TRIM - 문자열의 공백을 제거<li>LOWER - 문자열을 소문자로 변환<li>UPPER - 문자열을 대문자로 변환<li>LENGTH - 문자열의 길이를 구함<li>LOCATE - 식1 문자열에 식2가 포함된 위치를 구함</ul><h3 id="102-수학-함수와-연산자"><span class="mr-2">10.2 수학 함수와 연산자</span><a href="#102-수학-함수와-연산자" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>ABS - 절대값<li>SQRT - 제곱근<li>MOD - 수식1을 수식2로 나눈 나머지<li>그외 - 덧셈, 뺄셈, 곱셈, 나눗셈 등</ul><h3 id="103-날짜-시간-함수"><span class="mr-2">10.3 날짜 시간 함수</span><a href="#103-날짜-시간-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>CURRENT_DATE - 현재 시간을 DATE 타입으로 구함<li>CURRENT_TIME - 현재 시간을 TIME 타입으로 구함<li>CURRENT_TIMESTAMP - 현재 시간을 TIMESTAMP 타입으로 구함</ul><h3 id="104-콜렉션-관련-함수"><span class="mr-2">10.4 콜렉션 관련 함수</span><a href="#104-콜렉션-관련-함수" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><ul><li>SIZE - 콜렉션의 크기를 구함<li>INDEX - 해당 리스트의 인덱스 값 비교시 사용</ul><h2 id="11-네임드-쿼리"><span class="mr-2">11. 네임드 쿼리</span><a href="#11-네임드-쿼리" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>JPQL이 길어지면 문저열을 위한 큰따옴표와 문자열 연결을 위한 + 연산자 때문에 코드가 복잡해진다. 이럴때 필요한 것이 네임드 쿼리로 XML 파일에 네임드 쿼리를 등록하여 사용한다.</p><div class="language-xml highlighter-rouge"><div class="code-header"> <span data-label-text="XML"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre><td class="rouge-code"><pre><span class="c">&lt;!-- .......  --&gt;</span>
+
+<span class="nt">&lt;named-query</span> <span class="na">name=</span><span class="s">"Hotel.noReview"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;query&gt;</span>
+      select h from Hotel h
+      where not exists (select r from Review r where r.hotel = h)
+      order by h.name
+    <span class="nt">&lt;/query&gt;</span>
+<span class="nt">&lt;/named-query&gt;</span>
+</pre></table></code></div></div><p>xml 파일로 네임드 쿼리를 등록했다면 persistence.xml 파일에 해당 파일을 등록해야 한다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="nc">Player</span> <span class="n">player</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">find</span><span class="o">(</span><span class="nc">Player</span><span class="o">.</span><span class="na">class</span><span class="o">,</span> <span class="s">"P1"</span><span class="o">);</span>
+<span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Hotel</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createNamedQuery</span><span class="o">(</span><span class="err">"</span><span class="nc">Hotel</span><span class="o">.</span><span class="na">noReview</span><span class="o">,</span> <span class="nc">Hotel</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="c1">//...</span>
+</pre></table></code></div></div><p>네임드 쿼리를 작성하는 또 다른 방법으로는 @NamedQuery 애노테이션을 이용하는 것이다. 이 애너테이션은 엔티티에 설정할 수 있으며 @Embeddedable과 같이 엔티티 이외의 타입에는 설정할 수 없다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="nd">@Entity</span>
+<span class="nd">@NamedQueries</span><span class="o">({</span>
+  <span class="nd">@NamedQuery</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Hotel.all"</span><span class="o">,</span> <span class="n">query</span><span class="o">=</span><span class="s">"select h from Hotel h"</span><span class="o">),</span>
+  <span class="nd">@NamedQuery</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"Hotel.findById"</span><span class="o">,</span> <span class="n">query</span><span class="o">=</span><span class="err">"</span><span class="n">select</span> <span class="n">h</span> <span class="n">from</span> <span class="nc">Hotel</span> <span class="n">h</span> <span class="n">where</span> <span class="n">h</span><span class="o">.</span><span class="na">id</span><span class="o">=:</span><span class="n">id</span><span class="o">)</span>
+<span class="o">})</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hotel</span> <span class="o">{</span>
+    <span class="c1">//....</span>
+<span class="o">}</span>
+</pre></table></code></div></div><h2 id="12-n1-쿼리와-조회-전략"><span class="mr-2">12. N+1 쿼리와 조회 전략</span><a href="#12-n1-쿼리와-조회-전략" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h2></h2><p>N+1 쿼리는 연관이나 콜렉션과 관련되어 있다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre><td class="rouge-code"><pre><span class="nd">@Entity</span>
+<span class="nd">@Table</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"membership_card"</span><span class="o">)</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">MembershipCard</span> <span class="o">{</span>
+   <span class="nd">@Id</span>
+   <span class="nd">@Column</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"card_number"</span><span class="o">)</span>
+   <span class="kd">private</span> <span class="nc">String</span> <span class="n">number</span><span class="o">;</span>
+
+   <span class="nd">@OneToOne</span>
+   <span class="nd">@JoinColumn</span><span class="o">(</span><span class="n">name</span><span class="o">=</span><span class="s">"user_email"</span><span class="o">)</span>
+   <span class="kd">private</span> <span class="nc">User</span> <span class="n">owner</span><span class="o">;</span>
+<span class="o">}</span>
+</pre></table></code></div></div><p>@OneToOne 애노테이션의 fetch 속성의 기본값은 EAGER이다. 따라서 MembershipCard를 검색하면 조인 쿼리를 이용해서 연관된 엔티티의 데이터도 함께 조회한다.</p><p>하지만 JQPL에서는 즉시 로딩 설정을 해도 조인을 사용하지 않는다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">MembershipCard</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+   <span class="s">"select mc from MembershipCard mc"</span><span class="o">,</span> <span class="nc">MembershipCard</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">MembershipCard</span><span class="o">&gt;</span> <span class="n">cards</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></table></code></div></div><p>query.getResultList()를 실행하면 MembershipCard 엔티티를 조회하기 위한 select 쿼리를 실행한 뒤 User 엔티티 로딩을 위한 쿼리를 N번 실행한다. 이유는 User와 연관을 갖는 MembershipCard 엔티티가 N개이기 때문이다. 그리고 getResultList() 메서드 실행시에도 User 엔티티 쿼리를 실행하는데 즉시로딩으로 설정되어있기 때문이다.</p><p>이렇게 N개의 연관된 객체를 로딩하기 위한 N번의 쿼리를 더 실행하는 것을 N+1 쿼리 문제라고 한다.</p><h3 id="12-1-11-n1-연관에-대한-fetch-조인"><span class="mr-2">12-1 1:1, N:1 연관에 대한 fetch 조인</span><a href="#12-1-11-n1-연관에-대한-fetch-조인" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><p>N+1 쿼리 문제를 처리하는 가장 쉬운 방법은 JPQL에서 fetch 조인을 사용하는 것이다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+</pre><td class="rouge-code"><pre><span class="c1">//join 뒤에 fetch 키워드를 사용하면 조인한 대상을 함께 로딩해서 생성한다.(즉 N번 실행하지 않는다.)</span>
+<span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">MembershipCard</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+   <span class="s">"select mc from MembershipCard me left join fetch mc.owner u"</span><span class="o">,</span> <span class="nc">MembershipCard</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">MembershipCard</span><span class="o">&gt;</span> <span class="n">cards</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+</pre></table></code></div></div><p>fetch를 사용하지 않고 join만 사용하는 경우에도 조인 쿼리를 사용하지만 연관된 엔티티를 생성하지는 않는다. 그렇게 되면 연관된 데이터를 함께 로딩했음에도 연관 엔티티를 로딩하기 위한 쿼리를 추가로 실행한다.</p><h3 id="12-2-콜렉션-연관에-대한-fetch-조인"><span class="mr-2">12-2 콜렉션 연관에 대한 fetch 조인</span><a href="#12-2-콜렉션-연관에-대한-fetch-조인" class="anchor text-muted"><i class="fas fa-hashtag"></i></a></h3></h3><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+   <span class="s">"select t from Team t join fetch t.players p"</span><span class="o">,</span> <span class="nc">Team</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">teams</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+</pre></table></code></div></div><div class="language-plaintext highlighter-rouge"><div class="code-header"> <span data-label-text="Plaintext"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+</pre><td class="rouge-code"><pre># 실행되는 쿼리는 다음과 같다.
+select t.id, p.player_id, t.name, p.name, p.salary, p.team_id
+from Team t
+inner join Player p on t.id = p.team_id
+</pre></table></code></div></div><p><img data-src="/assets/img/posting_img/book/JPA%20프로그래밍%20입문/N+1예시.jpeg" width="700px" data-proofer-ignore></p><p>위 그림과 같은 결과가 나온다고 했을 때 쿼리 결과의 행 수는 5개이다. 그런데 JPQL에서 select 로 조회한 대상은 Team이므로 getResultList()로 구한 List는 5개의 Team 객체를 리턴한다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+</pre><td class="rouge-code"><pre><span class="nc">TypedQuery</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">query</span> <span class="o">=</span> <span class="n">em</span><span class="o">.</span><span class="na">createQuery</span><span class="o">(</span>
+   <span class="s">"select t from Team t join fetch t.players p"</span><span class="o">,</span> <span class="nc">Team</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+<span class="nc">List</span><span class="o">&lt;</span><span class="nc">Team</span><span class="o">&gt;</span> <span class="n">teams</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="na">getResultList</span><span class="o">();</span>
+
+<span class="nc">Team</span> <span class="n">tema1</span> <span class="o">=</span> <span class="n">teams</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+<span class="nc">Team</span> <span class="n">team1b</span> <span class="o">=</span> <span class="n">teams</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+
+<span class="nc">Set</span><span class="o">&lt;</span><span class="nc">Player</span><span class="o">&gt;</span> <span class="n">players</span> <span class="o">=</span> <span class="n">team1</span><span class="o">.</span><span class="na">getPlayers</span><span class="o">();</span>  <span class="c1">//fetch 조인으로 이미 로딩</span>
+</pre></table></code></div></div><p>fetcj 조인으로 연관된 players 콜렉션을 로딩했으므로 players에 대한 연관 설정이 지연 로딩이여도 team1.getPlayers()를 처음 실행하는 시점에 Player를 로딩하기 위한 쿼리를 실행하지 않는다.</p><div class="language-java highlighter-rouge"><div class="code-header"> <span data-label-text="Java"><i class="fas fa-code small"></i></span> <button aria-label="copy" data-title-succeed="Copied!"><i class="far fa-clipboard"></i></button></div><div class="highlight"><code><table class="rouge-table"><tbody><tr><td class="rouge-gutter gl"><pre class="lineno">1
+2
+3
+</pre><td class="rouge-code"><pre><span class="c1">//인덱스가 1인 결과로부터 1개의 결과로 한정</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setFirstResult</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+<span class="n">query</span><span class="o">.</span><span class="na">setMaxResults</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+</pre></table></code></div></div><p>setFirstResult나 setMaxResults를 설정하면 메모리에서 연산을 처리한다. 따라서 결과가 인덱스의 1번인 [T1]이 나와야할 것 같지만 [T2]가 나온다.</p><p>콜렉션에 대해 fetch 조인을 사용하게 되면 일단 쿼리를 실행해서 엔티티를 메모리에 모두 로딩한다. 그런 뒤 중복을 제거한다. 즉 [T1, T1, T2, T2, T2]를 메모리에 로딩한 뒤에 같은 식별자를 갖는 엔티티의 중복을 제거해서 [T1, T2]로 만든다.</p><p>이들을 함께 사용하게 되면 쿼리에 해당하는 데이터를 모두 로딩해서 메모리에서 페이징 처리를 하기 때문에 대량 데이터에는 사용하면 안된다. (OutOfMemory가 발생할 수 있음)</p></div><div class="post-tail-wrapper text-muted"><div class="post-meta mb-3"> <i class="far fa-folder-open fa-fw mr-1"></i> <a href='/categories/book/'>BOOK</a>, <a href='/categories/jpa-%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D-%EC%9E%85%EB%AC%B8/'>JPA 프로그래밍 입문</a></div><div class="post-tags"> <i class="fa fa-tags fa-fw mr-1"></i> <a href="/tags/jpa/" class="post-tag no-text-decoration" >jpa</a> <a href="/tags/sql/" class="post-tag no-text-decoration" >sql</a></div><div class="post-tail-bottom d-flex justify-content-between align-items-center mt-3 pt-5 pb-2"><div class="license-wrapper"> This post is licensed under <a href="https://creativecommons.org/licenses/by/4.0/"> CC BY 4.0 </a> by the author.</div><div class="share-wrapper"> <span class="share-label text-muted mr-1">Share</span> <span class="share-icons"> <a href="https://twitter.com/intent/tweet?text=13.+JPQL+-+Hyeonsu+Lim&url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F13.JPQL%2F" data-toggle="tooltip" data-placement="top" title="Twitter" target="_blank" rel="noopener" aria-label="Twitter"> <i class="fa-fw fab fa-twitter"></i> </a> <a href="https://www.facebook.com/sharer/sharer.php?title=13.+JPQL+-+Hyeonsu+Lim&u=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F13.JPQL%2F" data-toggle="tooltip" data-placement="top" title="Facebook" target="_blank" rel="noopener" aria-label="Facebook"> <i class="fa-fw fab fa-facebook-square"></i> </a> <a href="https://t.me/share/url?url=https%3A%2F%2Flimhyeonsu.github.io%2Fposts%2F13.JPQL%2F&text=13.+JPQL+-+Hyeonsu+Lim" data-toggle="tooltip" data-placement="top" title="Telegram" target="_blank" rel="noopener" aria-label="Telegram"> <i class="fa-fw fab fa-telegram"></i> </a> <i id="copy-link" class="fa-fw fas fa-link small" data-toggle="tooltip" data-placement="top" title="Copy link" data-title-succeed="Link copied successfully!"> </i> </span></div></div></div><script src="https://utteranc.es/client.js" repo="Limhyeonsu/Limhyeonsu.github.io" issue-term="pathname" theme="github-dark" crossorigin="anonymous" async> </script></div></div><div id="panel-wrapper" class="col-xl-3 pl-2 text-muted"><div class="access"><div id="access-lastmod" class="post"><div class="panel-heading">Recently Updated</div><ul class="post-content pl-0 pb-1 ml-1 mt-2"><li><a href="/posts/15.Top-N%EC%BF%BC%EB%A6%AC/">15. Top-N 쿼리</a><li><a href="/posts/09.%EB%A9%B4%EC%A0%91%EB%AC%B8%EC%A0%9C/">09. 면접문제</a><li><a href="/posts/14.%EB%B6%84%EC%84%9D%ED%95%A8%EC%88%98/">14. 분석함수</a><li><a href="/posts/07.%EA%B8%B0%EC%88%A0%EC%A0%81-%EB%AC%B8%EC%A0%9C/">07. 기술적 문제</a><li><a href="/posts/06.bigO/">06. big-O</a></ul></div><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@1.0.1/dist/bootstrap-toc.min.js"></script><div id="toc-wrapper" class="pl-0 pr-4 mb-5"><div class="panel-heading pl-3 pt-2 mb-2">Contents</div><nav id="toc" data-toggle="toc"></nav></div></div></div><div class="row"><div class="col-12 col-lg-11 col-xl-8"><div id="tail-wrapper" class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-md-4 pr-md-4"><div id="related-posts" class="mt-5 mb-2 mb-sm-4"><h3 class="pt-2 mt-1 mb-4 ml-1" data-toc-skip>Further Reading</h3><div class="card-deck mb-4"><div class="card"> <a href="/posts/02.JPA-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0/"><div class="card-body"> <em class="timeago small" data-ts="1671108218" > 2022-12-15 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>2. JPA 시작하기</h3><div class="text-muted small"><p> 01. 예제 프로젝트 02. 메이븐 프로젝트 생성 및 이클립스 임포트 03. 데이터베이스 생성 04. 모델 클래스와 매핑 설정 @Entity //1) @Table(name=&quot;user&quot;) //2) public class User { @Id //3) private String email; private String name; //4...</p></div></div></a></div><div class="card"> <a href="/posts/03.%EC%97%94%ED%8B%B0%ED%8B%B0/"><div class="card-body"> <em class="timeago small" data-ts="1671352838" > 2022-12-18 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>3. 엔티티</h3><div class="text-muted small"><p> 01. 엔티티 클래스 JPA에서 엔티티는 영속성을 가진 객체로서 가장 중요한 타입이다. JPA의 엔티티는 DB 테이블에 보관할 대상이 된다. EntityManager를 사용해서 엔티티 단위로 저장하고 조회하고 삭제한다. JPA는 두 가지 방법으로 엔티티를 설정하는데 1)@Entity 애노테이션을 사용하는 방법 2)XML 매핑 설정을 사용하는 방법이 ...</p></div></div></a></div><div class="card"> <a href="/posts/04.%EB%B0%B8%EB%A5%98%EC%99%80-@Embeddable/"><div class="card-body"> <em class="timeago small" data-ts="1671631332" > 2022-12-21 </em><h3 class="pt-0 mt-1 mb-3" data-toc-skip>4. 밸류와 @Embeddable</h3><div class="text-muted small"><p> 01. 밸류로 의미 더 드러내기 Hotel 클래스는 주소 자체를 의미하는 address 데이터를 갖고 있다. 그리고 Address 클래스는 zipcode, address1, address2를 데이터로 갖고 있어 따로 유추하지 않아도 주소가 우편번호, 주소1, 주소2로 구성된다는 것을 알 수 있다. Address 클래스 같은 타입을 value라고 ...</p></div></div></a></div></div></div><div class="post-navigation d-flex justify-content-between"> <a href="/posts/12.%EC%97%B0%EA%B4%80-%EC%9E%98-%EC%93%B0%EA%B8%B0/" class="btn btn-outline-primary" prompt="Older"><p>12. 연관 잘 쓰기</p></a> <a href="/posts/14.%ED%81%AC%EB%A6%AC%ED%85%8C%EB%A6%AC%EC%95%84-API%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-%EC%BF%BC%EB%A6%AC/" class="btn btn-outline-primary" prompt="Newer"><p>14. 크리테리아 API를 이용한 쿼리</p></a></div></div></div></div><footer class="d-flex w-100 justify-content-center"><div class="d-flex justify-content-between align-items-center text-muted"><div class="footer-left"><p class="mb-0"> © 2023 <a href="https://twitter.com/imhyeon99494867">Lim Hyeonsu</a>. <span data-toggle="tooltip" data-placement="top" title="Except where otherwise noted, the blog posts on this site are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) License by the author.">Some rights reserved.</span></p></div><div class="footer-right"><p class="mb-0"> Powered by <a href="https://jekyllrb.com" target="_blank" rel="noopener">Jekyll</a> with <a href="https://github.com/cotes2020/jekyll-theme-chirpy" target="_blank" rel="noopener">Chirpy</a> theme.</p></div></div></footer></div><div id="search-result-wrapper" class="d-flex justify-content-center unloaded"><div class="col-12 col-sm-11 post-content"><div id="search-hints"><div id="access-tags"><div class="panel-heading">Trending Tags</div><div class="d-flex flex-wrap mt-3 mb-1 mr-3"> <a class="post-tag" href="/tags/sql/">sql</a> <a class="post-tag" href="/tags/software-engineering/">software_engineering</a> <a class="post-tag" href="/tags/jpa/">jpa</a> <a class="post-tag" href="/tags/computer/">computer</a> <a class="post-tag" href="/tags/network/">network</a> <a class="post-tag" href="/tags/http/">http</a> <a class="post-tag" href="/tags/infra/">infra</a> <a class="post-tag" href="/tags/tdd/">tdd</a> <a class="post-tag" href="/tags/algorithm/">algorithm</a> <a class="post-tag" href="/tags/bufferedreader/">bufferedreader</a></div></div></div><div id="search-results" class="d-flex flex-wrap justify-content-center text-muted mt-3"></div></div></div></div><div id="mask"></div><a id="back-to-top" href="#" aria-label="back-to-top" class="btn btn-lg btn-box-shadow" role="button"> <i class="fas fa-angle-up"></i> </a> <script src="https://cdn.jsdelivr.net/npm/simple-jekyll-search@1.10.0/dest/simple-jekyll-search.min.js"></script> <script> SimpleJekyllSearch({ searchInput: document.getElementById('search-input'), resultsContainer: document.getElementById('search-results'), json: '/assets/js/data/search.json', searchResultTemplate: '<div class="pl-1 pr-1 pl-sm-2 pr-sm-2 pl-lg-4 pr-lg-4 pl-xl-0 pr-xl-0"> <a href="{url}">{title}</a><div class="post-meta d-flex flex-column flex-sm-row text-muted mt-1 mb-1"> {categories} {tags}</div><p>{snippet}</p></div>', noResultsText: '<p class="mt-5">Oops! No result founds.</p>', templateMiddleware: function(prop, value, template) { if (prop === 'categories') { if (value === '') { return `${value}`; } else { return `<div class="mr-sm-4"><i class="far fa-folder fa-fw"></i>${value}</div>`; } } if (prop === 'tags') { if (value === '') { return `${value}`; } else { return `<div><i class="fa fa-tag fa-fw"></i>${value}</div>`; } } } }); </script> <script src="https://cdn.jsdelivr.net/combine/npm/magnific-popup@1/dist/jquery.magnific-popup.min.js,npm/lozad/dist/lozad.min.js,npm/clipboard@2/dist/clipboard.min.js"></script> <script src="https://cdn.jsdelivr.net/combine/npm/dayjs@1/dayjs.min.js,npm/dayjs@1/locale/en.min.js,npm/dayjs@1/plugin/relativeTime.min.js,npm/dayjs@1/plugin/localizedFormat.min.js"></script> <script defer src="/assets/js/dist/post.min.js"></script> <script src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.bundle.min.js"></script> <script defer src="/app.js"></script>
